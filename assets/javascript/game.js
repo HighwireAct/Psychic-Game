@@ -1,6 +1,6 @@
 // HELPER FUNCTIONS
 
-let randomizeAlphaCode = function() {
+function randomizeAlphaCode() {
     return Math.floor(Math.random() * 25) + 97;
 }
 
@@ -22,7 +22,7 @@ function arrayToString(array,seperator) {
 };
 
 // Updates text in browser
-let updateText = function () {
+function updateText() {
     let winSpan = document.getElementById("wins");
     let lossSpan = document.getElementById("losses");
     let guessRemainSpan = document.getElementById("guesses-remaining");
@@ -34,17 +34,19 @@ let updateText = function () {
     prevGuessSpan.innerText = arrayToString(previousGuesses, ", ");
 };
 
-let resetGuesses = function () {
-    guessesRemaining = 10;
+function newRound() {
+    guessesRemaining = 9;
     previousGuesses = [];
     playerGuess = null;
+    computerLetterCode = randomizeAlphaCode();
+    console.log(computerLetterCode, String.fromCharCode((computerLetterCode)));
 }
 
 // GAME LOGIC
 
 let wins = 0;
 let losses = 0;
-let guessesRemaining = 10;
+let guessesRemaining = 9;
 let previousGuesses = [];
 let playerGuess = null;
 let computerLetterCode = randomizeAlphaCode();
@@ -53,8 +55,27 @@ updateText();
 
 console.log(computerLetterCode, String.fromCharCode((computerLetterCode)));
 
-document.keypressed();
-
+document.addEventListener("keypress", function(event) {
+    let charPressed = event.keyCode;
+    console.log(charPressed);
+    for (let i = 0; i < previousGuesses.length; i++) {
+        if (charPressed === previousGuesses[i]) {
+            return 0;
+        }
+    }
+    if (charPressed === computerLetterCode) {
+        wins++;
+        newRound();
+    } else {
+        previousGuesses.push(charPressed);
+        guessesRemaining--;
+    }
+    if (guessesRemaining === 0) {
+        losses++;
+        newRound();
+    }
+    updateText();
+});
 
 /*
 Keypressed function:
