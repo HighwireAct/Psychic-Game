@@ -1,5 +1,6 @@
 // HELPER FUNCTIONS
 
+// Generates a random character code between 97(a) and 122(z)
 function randomizeAlphaCode() {
     return Math.floor(Math.random() * 25) + 97;
 }
@@ -34,16 +35,17 @@ function updateText() {
     prevGuessSpan.innerText = arrayToString(previousGuesses, ", ");
 };
 
+// Resets values for next round
 function newRound() {
     guessesRemaining = 9;
     previousGuesses = [];
     playerGuess = null;
     computerLetterCode = randomizeAlphaCode();
-    console.log(computerLetterCode, String.fromCharCode((computerLetterCode)));
 }
 
 // GAME LOGIC
 
+// Initialize values
 let wins = 0;
 let losses = 0;
 let guessesRemaining = 9;
@@ -51,13 +53,11 @@ let previousGuesses = [];
 let playerGuess = null;
 let computerLetterCode = randomizeAlphaCode();
 
-updateText();
-
-console.log(computerLetterCode, String.fromCharCode((computerLetterCode)));
+updateText(); // Displays initial values on the page
 
 document.addEventListener("keypress", function(event) {
-    let charPressed = event.keyCode;
-    console.log(charPressed);
+    let charPressed = event.keyCode; // Store character code of pressed key
+    // Break out of function if letter has already been guessed
     for (let i = 0; i < previousGuesses.length; i++) {
         if (charPressed === previousGuesses[i]) {
             return 0;
@@ -76,19 +76,3 @@ document.addEventListener("keypress", function(event) {
     }
     updateText();
 });
-
-/*
-Keypressed function:
-    1. Store character code of pressed key
-    2. Check previousGuesses to make sure player hasn't guessed letter before
-        1. If they have, return 0 and break out of function
-    3. Compare character code from player to character code from computer
-        1. If they match:
-            1. Reset guesses
-        2. If they don't:
-            1. Add guess to previousGuesses
-            2. Decrement guessesRemaining
-    4. Check guessesRemaining
-        1. If = 0
-            1. Reset guesses
-*/
