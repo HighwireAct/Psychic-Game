@@ -63,6 +63,9 @@ document.addEventListener("keypress", function(event) {
             return 0;
         }
     }
+    if (charPressed < 97 || charPressed > 122) {
+        return 0;
+    }
     if (charPressed === computerLetterCode) {
         wins++;
         newRound();
